@@ -1,0 +1,6 @@
+/.apt_generated/
+/target/
+/.mvn
+/.settings
+/.classpath
+/.project
