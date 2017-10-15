@@ -8,5 +8,6 @@
   <modules>
   	<module>spring-redis</module>
   	<module>spring-session-redis</module>
+  	<module>spring-security-session</module>
   </modules>
 </project>

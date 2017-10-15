@@ -12,14 +12,21 @@ import javax.servlet.http.HttpSession;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.session.ExpiringSession;
+import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.zhubao.entity.User;
 
 @RestController
 @Slf4j
 public class MainController {
+	
+	@Autowired
+    private FindByIndexNameSessionRepository<? extends ExpiringSession> sessionRepository;
 
 	@GetMapping({"/index", "/"})
 	public User index(@RequestParam(name = "name", defaultValue = "Jason") String name, HttpServletRequest request, HttpSession session) {
@@ -52,4 +59,12 @@ public class MainController {
 		map.put("value", session.getAttribute("name"));
 		return map;
 	}
+	
+	
+    @GetMapping("/user/query")
+    @ResponseBody
+    public Map<String, ? extends ExpiringSession> findByUsername(@RequestParam String name) {
+        Map<String, ? extends ExpiringSession> usersSessions = sessionRepository.findByIndexNameAndIndexValue(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, name);
+        return usersSessions;
+    }
 }
